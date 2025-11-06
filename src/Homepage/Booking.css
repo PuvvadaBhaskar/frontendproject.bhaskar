@@ -1,0 +1,37 @@
+.booking-page{
+  min-height:calc(100vh - 40px);
+  padding:40px 12px 80px;
+  color:#031418;
+}
+.booking-header{ text-align:center; font-size:2.4rem; font-weight:800; margin-bottom:20px }
+.booking-panel{
+  max-width:900px;
+  margin:0 auto;
+  background:rgba(0,0,0,0.25);
+  padding:28px;
+  border-radius:18px;
+  display:flex;
+  gap:20px;
+  align-items:flex-start;
+  backdrop-filter: blur(6px);
+}
+.booking-image-wrap{ flex:1 }
+.booking-image-box{
+  background:#bfe0d5;
+  padding:18px;
+  border-radius:8px;
+  text-align:center;
+}
+.small-title{ margin:0 0 12px; font-weight:800 }
+.booking-image{ width:100%; border-radius:6px; display:block }
+.booking-info{ flex:1; color:#071b1a }
+.room-title{ font-size:2rem; margin-top:0 }
+.room-price{ font-weight:700; margin:8px 0 16px }
+.add-food{ background:#8f7faa; color:white; padding:10px 12px; border-radius:14px; border:0; cursor:pointer; margin-bottom:18px }
+.proceed-wrap{ display:flex; justify-content:center; margin-top:18px }
+.proceed-btn{ background:#8f7faa; color:white; padding:12px 22px; border-radius:28px; border:0; cursor:pointer; font-weight:700 }
+.booking-context{ margin-top:14px; color:#eefaf7 }
+
+@media (max-width:800px){
+  .booking-panel{ flex-direction:column }
+}

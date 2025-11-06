@@ -1,0 +1,31 @@
+.explore-page{
+  padding: 2.5rem 1.5rem 4rem;
+  min-height: calc(100vh - 40px);
+  color: #061422;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+
+.explore-header{ text-align:center; margin-bottom: 1.75rem; position: relative; padding-top: 0.5rem }
+.explore-header .back-btn{ position:absolute; left:1rem; top:1rem; padding:0.5rem 1rem; border-radius:18px; border:none; background:rgba(255,255,255,0.85); cursor:pointer }
+.explore-header h1{ font-size:2.6rem; margin:0 0 0.25rem; font-weight:800 }
+.explore-header .explore-sub{ color: #092233; opacity:0.85; margin-bottom:1rem }
+
+.explore-grid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  max-width:1200px;
+  margin: 0 auto;
+}
+
+.card{ background: rgba(255,255,255,0.06); border-radius:8px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 8px 24px rgba(2,8,20,0.15) }
+.card-media{ height:220px; background-size:cover; background-position:center }
+.card-body{ padding:0.85rem 1rem; background: rgba(255,255,255,0.04) }
+.card-body h3{ margin:0 0 0.5rem; font-size:1.1rem; color:#031e2b }
+.card-body p{ margin:0; color: #031e2b; opacity:0.9 }
+
+.card.clickable{ cursor: pointer; transform: translateZ(0); transition: transform .14s ease, box-shadow .14s ease }
+.card.clickable:hover{ transform: translateY(-6px); box-shadow: 0 18px 36px rgba(2,8,20,0.2) }
+
+@media (max-width:1000px){ .explore-grid{ grid-template-columns: repeat(2, 1fr) } }
+@media (max-width:600px){ .explore-grid{ grid-template-columns:1fr } .explore-header .back-btn{ position:static; display:inline-block; margin-bottom:12px } }

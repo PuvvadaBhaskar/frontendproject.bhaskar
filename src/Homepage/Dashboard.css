@@ -1,0 +1,108 @@
+.dashboard-root{
+  min-height:100vh;
+  background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=60');
+  background-size: cover;
+  background-position: center;
+  color: #000;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px 40px;
+}
+
+.dashboard-header{
+  text-align:center;
+  font-size:48px;
+  font-weight:700;
+  margin-top:6px;
+  color:#000;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+}
+
+.dashboard-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-top:20px;
+}
+
+.profile{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
+.avatar{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  border:6px solid rgba(0,0,0,0.6);
+  background: rgba(255,255,255,0.2);
+}
+
+.profile-info .name{
+  font-size:22px;
+  font-weight:700;
+}
+.profile-info .email{
+  font-size:16px;
+  margin-top:6px;
+}
+.edit-btn{
+  margin-top:8px;
+  padding:6px 14px;
+  border-radius:20px;
+  border:none;
+  background:rgba(124,105,148,0.75);
+  color:#000;
+}
+
+.actions{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.action-btn{
+  padding:10px 22px;
+  border-radius:20px;
+  border:none;
+  background:rgba(124,105,148,0.8);
+  cursor:pointer;
+}
+.action-btn.logout{ text-decoration:none; display:inline-block; text-align:center; color:#000 }
+
+.booking-title{
+  text-align:center;
+  margin-top:40px;
+  font-size:24px;
+  font-weight:700;
+}
+
+.booking-list{
+  margin-top:18px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  max-width:1000px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.booking-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:22px 24px;
+  border-radius:20px;
+  background: rgba(240, 248, 248, 0.7);
+  font-size:22px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.booking-item .place{ font-weight:600 }
+.status{ font-weight:700; }
+.status.done{ color:#0b7a2a }
+.status.upcoming{ color:#1a1a1a }
+
+@media (max-width:700px){
+  .dashboard-header{ font-size:34px }
+  .booking-item{ font-size:18px }
+  .dashboard-top{ flex-direction:column; gap:18px }
+  .actions{flex-direction:row}
+}

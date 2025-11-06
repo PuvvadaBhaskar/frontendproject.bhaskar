@@ -1,0 +1,55 @@
+.top-header {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+  position: relative;
+  z-index: 5;
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 1.75rem;
+  color: rgba(255,255,255,0.95);
+  letter-spacing: 1px;
+}
+
+.top-nav a {
+  margin-left: 1rem;
+  color: rgba(255,255,255,0.95);
+  text-decoration: none;
+  font-weight: 700;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.top-nav a:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.location {
+  margin-left: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 12px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.8);
+  color: #0a2230;
+  white-space: nowrap;
+  max-width: 40vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.location:disabled { opacity: 0.7; cursor: not-allowed; }
+
+/* Optional: ensure the header remains readable on light backgrounds too */
+@media (prefers-color-scheme: light) {
+  .brand { color: #111; }
+  .top-nav a { color: #111; }
+  .location { background: #e8eef3; color: #0a2230; }
+}
