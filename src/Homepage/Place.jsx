@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import cards from './data'
+import { getStoredGuides } from '../lib/dataService'
 import './Explore.css'
 
 export default function Place(){
@@ -52,8 +53,12 @@ export default function Place(){
 
             <h3>Available Guides</h3>
             <div style={{display:'flex', gap:12, marginTop:8}}>
-              <div style={{background:'rgba(0,0,0,0.06)', padding:12, borderRadius:8}}>John Doe<br/><small>Historic tours</small></div>
-              <div style={{background:'rgba(0,0,0,0.06)', padding:12, borderRadius:8}}>Sunny<br/><small>Nature & trails</small></div>
+              {(getStoredGuides() || []).slice(0,6).map((g, idx) => (
+                <div key={g.id || idx} style={{background:'rgba(0,0,0,0.06)', padding:12, borderRadius:8}}>
+                  {g.name || g.email || 'Guide'}<br/>
+                  <small>{g.phone || 'Local guide'}</small>
+                </div>
+              ))}
             </div>
 
           </div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import cards from './data'
+import { getStoredHomestays } from '../lib/dataService'
 import './Homestays.css'
 
 export default function Homestays(){
@@ -12,8 +13,9 @@ export default function Homestays(){
   const checkin = params.get('checkin') || ''
   const travelers = params.get('travelers') || ''
 
-  // sample rooms — prefer place.homestays if provided by data
-  const rooms = place && place.homestays ? place.homestays : [
+  // sample rooms — prefer place.homestays if provided by data, but also merge any admin-added homestays from storage
+  const stored = getStoredHomestays()
+  const baseRooms = place && place.homestays ? place.homestays : [
     {
       id: 1,
       title: 'Standard Room',
@@ -36,6 +38,8 @@ export default function Homestays(){
     }
   ]
 
+  // Merge stored homestays at the top (stored items are simple {id,title,subtitle,price,...})
+  const rooms = (stored && stored.length ? [...stored, ...baseRooms] : baseRooms)
   if (!place) return (
     <div style={{padding:24}}>
       <button onClick={() => navigate(-1)}>← Back</button>

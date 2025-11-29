@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import './Explore.css'
 import cards from './data'
+import { getStoredSpots } from '../lib/dataService'
 
 export default function Explore(){
   const navigate = useNavigate()
@@ -11,9 +12,19 @@ export default function Explore(){
   const checkin = params.get('checkin') || ''
   const travelers = params.get('travelers') || ''
 
+  // include admin-added spots as additional cards
+  const storedSpots = getStoredSpots().map((s, idx) => ({
+    id: `spot-${s.id || idx}`,
+    title: s.title || s.name || 'Spot',
+    subtitle: s.desc || '',
+    image: s.image || ''
+  }))
+
+  const allCards = [...cards, ...storedSpots]
+
   const filtered = q
-    ? cards.filter(c => c.title.toLowerCase().includes(q.toLowerCase()))
-    : cards
+    ? allCards.filter(c => c.title.toLowerCase().includes(q.toLowerCase()))
+    : allCards
 
   return (
     <div className="explore-page">

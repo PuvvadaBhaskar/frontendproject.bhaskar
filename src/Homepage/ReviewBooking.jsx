@@ -40,6 +40,38 @@ export default function ReviewBooking(){
   const base = room.price * nights
   const grand = base + (food.total || 0)
 
+  // Persist a booking to localStorage and navigate to dashboard
+  const handleConfirm = () => {
+    try {
+      const raw = localStorage.getItem('bookings')
+      const existing = raw ? JSON.parse(raw) : []
+      const newBooking = {
+        id: Date.now(),
+        placeId: id,
+        placeTitle: place ? place.title : 'Selected Place',
+        roomId: roomId,
+        roomTitle: room.title,
+        checkin,
+        travelers,
+        nights,
+        food: food.items || {},
+        foodTotal: food.total || 0,
+        roomPrice: room.price,
+        total: grand,
+        status: 'Upcoming',
+        ts: Date.now(),
+      }
+      existing.unshift(newBooking)
+      localStorage.setItem('bookings', JSON.stringify(existing))
+    } catch (err) {
+      console.error('Failed to persist booking', err)
+    }
+
+    try { localStorage.removeItem(`order:${id}:${roomId}`) } catch { /* ignore */ }
+    setConfirmOpen(false)
+    navigate('/dashboard')
+  }
+
   return (
     <div className="booking-page">
       <h1 className="booking-header">Review & Confirm</h1>
@@ -106,7 +138,7 @@ export default function ReviewBooking(){
             <h2 style={{marginTop:0}}>Booking Confirmed</h2>
             <p>Your reservation has been confirmed. Total paid: <strong>${grand}</strong></p>
             <div style={{display:'flex', gap:8, justifyContent:'center', marginTop:12}}>
-              <button className="proceed-btn" onClick={() => { setConfirmOpen(false); try { localStorage.removeItem(`order:${id}:${roomId}`) } catch { /* ignore */ } navigate('/dashboard') }}>Go to Dashboard</button>
+              <button className="proceed-btn" onClick={handleConfirm}>Go to Dashboard</button>
               <button className="add-food" onClick={() => { setConfirmOpen(false) }}>Close</button>
             </div>
           </div>

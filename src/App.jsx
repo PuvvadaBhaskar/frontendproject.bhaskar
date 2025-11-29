@@ -14,6 +14,11 @@ import Dashboard from './Homepage/Dashboard'
 import Contact from './Homepage/Contact'
 import ReviewBooking from './Homepage/ReviewBooking'
 import ChangePassword from './Homepage/ChangePassword'
+import Admin from './Homepage/Admin'
+import GuideDashboard from './Homepage/GuideDashboard'
+import ManageUsers from './Homepage/ManageUsers'
+import ManagePosts from './Homepage/ManagePosts'
+import ManageTopics from './Homepage/ManageTopics'
 
 function App() {
   return (
@@ -32,6 +37,8 @@ function App() {
   <Route path="/place/:id/homestays/book/:roomId/food" element={<FoodMenu/>} />
   <Route path="/place/:id/homestays/book/:roomId/review" element={<ReviewBooking/>} />
   <Route path="/change-password" element={<ChangePassword/>} />
+            <Route path="/admin" element={<Admin/>} />
+        <Route path="/guide" element={<GuideDashboard/>} />
       </Routes>
     </BrowserRouter>
   );
