@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import cards from './data'
 import './Booking.css'
+import { API_BASE } from '../config'
 
 const DEFAULT_ROOMS = [
   { id: 1, title: 'Standard Room', subtitle: 'Standard Double Room', price: 120 },
@@ -40,31 +41,56 @@ export default function ReviewBooking(){
   const base = room.price * nights
   const grand = base + (food.total || 0)
 
-  // Persist a booking to localStorage and navigate to dashboard
-  const handleConfirm = () => {
-    try {
-      const raw = localStorage.getItem('bookings')
-      const existing = raw ? JSON.parse(raw) : []
-      const newBooking = {
-        id: Date.now(),
-        placeId: id,
-        placeTitle: place ? place.title : 'Selected Place',
-        roomId: roomId,
-        roomTitle: room.title,
-        checkin,
-        travelers,
-        nights,
-        food: food.items || {},
-        foodTotal: food.total || 0,
-        roomPrice: room.price,
-        total: grand,
-        status: 'Upcoming',
-        ts: Date.now(),
+  // Persist a booking to backend (if configured) or localStorage and navigate to dashboard
+  const handleConfirm = async () => {
+    const newBooking = {
+      id: Date.now(),
+      placeId: id,
+      placeTitle: place ? place.title : 'Selected Place',
+      roomId: roomId,
+      roomTitle: room.title,
+      checkin,
+      travelers,
+      nights,
+      food: food.items || {},
+      foodTotal: food.total || 0,
+      roomPrice: room.price,
+      total: grand,
+      status: 'Upcoming',
+      ts: Date.now(),
+    }
+
+    // Try backend first if API_BASE is configured
+    if (API_BASE && API_BASE.length > 0) {
+      try {
+        const url = `${API_BASE.replace(/\/$/, '')}/api/bookings`
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newBooking)
+        })
+        if (!res.ok) throw new Error('Server returned ' + res.status)
+        // backend saved — optionally use response
+      } catch (err) {
+        console.error('Failed to save booking to backend, falling back to localStorage', err)
+        // fallback to localStorage below
+        try {
+          const raw = localStorage.getItem('bookings')
+          const existing = raw ? JSON.parse(raw) : []
+          existing.unshift(newBooking)
+          localStorage.setItem('bookings', JSON.stringify(existing))
+        } catch (err2) { console.error('Failed to persist booking locally', err2) }
       }
-      existing.unshift(newBooking)
-      localStorage.setItem('bookings', JSON.stringify(existing))
-    } catch (err) {
-      console.error('Failed to persist booking', err)
+    } else {
+      // No backend configured — persist locally
+      try {
+        const raw = localStorage.getItem('bookings')
+        const existing = raw ? JSON.parse(raw) : []
+        existing.unshift(newBooking)
+        localStorage.setItem('bookings', JSON.stringify(existing))
+      } catch (err) {
+        console.error('Failed to persist booking', err)
+      }
     }
 
     try { localStorage.removeItem(`order:${id}:${roomId}`) } catch { /* ignore */ }

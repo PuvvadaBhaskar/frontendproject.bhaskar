@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './Home.css'
+import { db } from '../firebase'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 
 const Home = () => {
   const navigate = useNavigate()
@@ -8,13 +10,28 @@ const Home = () => {
   const [checkin, setCheckin] = useState('')
   const [travelers, setTravelers] = useState('')
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e && e.preventDefault()
+    // save current date/time to Firestore
+    try {
+      await saveDate()
+    } catch (err) {
+      console.error('Failed saving date to Firestore:', err)
+    }
     const params = new URLSearchParams()
     if (destination) params.set('q', destination)
     if (checkin) params.set('checkin', checkin)
     if (travelers) params.set('travelers', travelers)
     navigate(`/explore?${params.toString()}`)
+  }
+
+  const saveDate = async () => {
+    const col = collection(db, 'savedDates')
+    await addDoc(col, {
+      createdAt: serverTimestamp(),
+      iso: new Date().toISOString(),
+      readable: new Date().toString()
+    })
   }
 
   return (

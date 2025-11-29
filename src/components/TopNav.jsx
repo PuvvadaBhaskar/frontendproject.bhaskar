@@ -25,7 +25,6 @@ export default function TopNav() {
 
       const { latitude, longitude } = position.coords
 
-      // Reverse geocode via OpenStreetMap Nominatim (no key required)
       const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
       const res = await fetch(url, { headers: { 'Accept': 'application/json' } })
       if (!res.ok) throw new Error('Reverse geocoding failed')
@@ -35,7 +34,7 @@ export default function TopNav() {
       const city = addr.city || addr.town || addr.village || addr.hamlet
       const state = addr.state
       const country = addr.country
-
+ 
       const pretty = [city, state, country].filter(Boolean).join(', ')
       setLocLabel(pretty || `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`)
     } catch (err) {

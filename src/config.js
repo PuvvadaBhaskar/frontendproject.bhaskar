@@ -22,3 +22,7 @@ export default {
   ADMIN_EMAILS,
   isAdminEmail,
 }
+
+// Base URL for backend API. Set using Vite env variable `VITE_API_BASE`.
+// Example: VITE_API_BASE=http://localhost:4000
+export const API_BASE = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_BASE ? import.meta.env.VITE_API_BASE : ''
