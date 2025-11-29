@@ -14,25 +14,24 @@ const MENU = {
   ]
 }
 
-export default function FoodMenu(){
+export default function FoodMenu() {
   const { id, roomId } = useParams()
   const navigate = useNavigate()
   const [category, setCategory] = useState('indian')
   const [order, setOrder] = useState({})
 
-  // use params so linters don't complain about unused variables
   const _placeId = id || ''
   const _roomId = roomId || ''
 
-  function addItem(item){
+  function addItem(item) {
     setOrder(prev => {
-      const copy = {...prev}
+      const copy = { ...prev }
       copy[item.id] = (copy[item.id] || 0) + 1
       return copy
     })
   }
 
-  function total(){
+  function total() {
     let sum = 0
     Object.keys(order).forEach(key => {
       const item = Object.values(MENU).flat().find(i => i.id === key)
@@ -47,14 +46,32 @@ export default function FoodMenu(){
         <h1 className="foodmenu-title">Add-On Food Menu</h1>
 
         <div className="foodmenu-cats">
-          <button className={category==='indian'? 'active':''} onClick={()=>setCategory('indian')}>indian</button>
-          <button className={category==='chines'? 'active':''} onClick={()=>setCategory('chines')}>chinies</button>
+          <button
+            className={category === 'indian' ? 'active' : ''}
+            onClick={() => setCategory('indian')}
+          >
+            indian
+          </button>
+          <button
+            className={category === 'chines' ? 'active' : ''}
+            onClick={() => setCategory('chines')}
+          >
+            chinies
+          </button>
         </div>
 
-        {( _placeId || _roomId ) && (
-          <div style={{marginBottom:10, color:'#03202a'}}>
-            {_placeId ? <span style={{marginRight:12}}>Place: <strong>{_placeId}</strong></span> : null}
-            {_roomId ? <span>Room: <strong>{_roomId}</strong></span> : null}
+        {(_placeId || _roomId) && (
+          <div style={{ marginBottom: 10, color: '#03202a' }}>
+            {_placeId && (
+              <span style={{ marginRight: 12 }}>
+                Place: <strong>{_placeId}</strong>
+              </span>
+            )}
+            {_roomId && (
+              <span>
+                Room: <strong>{_roomId}</strong>
+              </span>
+            )}
           </div>
         )}
 
@@ -68,7 +85,9 @@ export default function FoodMenu(){
               </div>
               <div className="food-right">
                 <div className="food-price">${item.price}</div>
-                <button className="food-add" onClick={()=>addItem(item)}>Add</button>
+                <button className="food-add" onClick={() => addItem(item)}>
+                  Add
+                </button>
               </div>
             </div>
           ))}
@@ -76,15 +95,15 @@ export default function FoodMenu(){
 
         <div className="order-summary">
           <h4>Your Order</h4>
-          <div className="order-total">Total: <span>${total()}</span></div>
-          <div style={{display:'flex', justifyContent:'center', marginTop:12}}>
+          <div className="order-total">
+            Total: <span>${total()}</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 12 }}>
             <button
               className="proceed-food"
               onClick={() => {
-                try {
-                  const payload = { order, total: total(), ts: Date.now() }
-                  localStorage.setItem(`order:${id}:${roomId}`, JSON.stringify(payload))
-                } catch { /* ignore storage errors */ }
+                const payload = { order, total: total(), ts: Date.now() }
+                localStorage.setItem(`order:${id}:${roomId}`, JSON.stringify(payload))
                 navigate(`/place/${id}/homestays/book/${roomId}/review${window.location.search}`)
               }}
             >

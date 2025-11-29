@@ -19,6 +19,7 @@ import GuideDashboard from './Homepage/GuideDashboard'
 import ManageUsers from './Homepage/ManageUsers'
 import ManagePosts from './Homepage/ManagePosts'
 import ManageTopics from './Homepage/ManageTopics'
+import Proceedings from './Homepage/Proceedings'
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/signup" element={<SignupPage/>} />
         <Route path="/home" element={<Home/>} />
   <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/proceedings" element={<Proceedings/>} />
         <Route path="/contact" element={<Contact/>} />
         <Route path="/explore" element={<Explore/>} />
   <Route path="/place/:id" element={<Place/>} />

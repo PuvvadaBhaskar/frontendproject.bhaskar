@@ -9,6 +9,7 @@ const Home = () => {
   const [destination, setDestination] = useState('')
   const [checkin, setCheckin] = useState('')
   const [travelers, setTravelers] = useState('')
+  const today = new Date().toISOString().split('T')[0]
 
   const handleSearch = async (e) => {
     e && e.preventDefault()
@@ -52,9 +53,11 @@ const Home = () => {
 
           <input
             className="search-input"
-            placeholder="Check-in (YYYY-MM-DD)"
+            type="date"
+            aria-label="Check-in date"
             value={checkin}
             onChange={(e) => setCheckin(e.target.value)}
+            min={today}
           />
 
           <input
