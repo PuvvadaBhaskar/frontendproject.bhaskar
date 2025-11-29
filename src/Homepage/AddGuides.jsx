@@ -14,6 +14,8 @@ export default function AddGuides(){
     const next = [obj, ...items]
     setItems(next)
     try { localStorage.setItem('guides', JSON.stringify(next)) } catch (err) { void err }
+    // notify other parts of the app in this tab and other tabs
+    try { window.dispatchEvent(new CustomEvent('guides-updated', { detail: obj })) } catch (err) { void err }
     setName(''); setPhone('')
     // also add to users list as role 'guide' so admins can view guides in users
     try {
@@ -22,6 +24,7 @@ export default function AddGuides(){
       const user = { id: Date.now() + 1, name, email: `${name.replace(/\s+/g, '').toLowerCase()}@guide.local`, role: 'guide', ts: Date.now() }
       users.unshift(user)
       try { localStorage.setItem('users', JSON.stringify(users)) } catch (err) { void err }
+        try { window.dispatchEvent(new CustomEvent('users-updated', { detail: user })) } catch (err) { void err }
     } catch (err) { void err }
   }
 
@@ -29,6 +32,7 @@ export default function AddGuides(){
     const next = items.filter(i=>i.id !== id)
     setItems(next)
     try { localStorage.setItem('guides', JSON.stringify(next)) } catch (err) { void err }
+    try { window.dispatchEvent(new CustomEvent('guides-updated', { detail: { id } })) } catch (err) { void err }
   }
 
   return (

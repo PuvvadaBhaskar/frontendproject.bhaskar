@@ -2,6 +2,7 @@ import React from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import cards from './data'
 import { getStoredGuides } from '../lib/dataService'
+import { useEffect, useState } from 'react'
 import './Explore.css'
 
 export default function Place(){
@@ -52,14 +53,7 @@ export default function Place(){
             </ul>
 
             <h3>Available Guides</h3>
-            <div style={{display:'flex', gap:12, marginTop:8}}>
-              {(getStoredGuides() || []).slice(0,6).map((g, idx) => (
-                <div key={g.id || idx} style={{background:'rgba(0,0,0,0.06)', padding:12, borderRadius:8}}>
-                  {g.name || g.email || 'Guide'}<br/>
-                  <small>{g.phone || 'Local guide'}</small>
-                </div>
-              ))}
-            </div>
+            <GuidesList />
 
           </div>
         </div>
@@ -88,6 +82,35 @@ export default function Place(){
           ))}
         </div>
       </div>
+    </div>
+  )
+}
+
+function GuidesList(){
+  const [guides, setGuides] = useState(() => getStoredGuides() || [])
+
+  useEffect(() => {
+    const refresh = () => {
+      try { setGuides(getStoredGuides() || []) } catch (err) { void err }
+    }
+    const onStorage = (e) => { if (e.key === 'guides') refresh() }
+    const onGuidesUpdated = () => { refresh() }
+    window.addEventListener('storage', onStorage)
+    window.addEventListener('guides-updated', onGuidesUpdated)
+    return () => {
+      window.removeEventListener('storage', onStorage)
+      window.removeEventListener('guides-updated', onGuidesUpdated)
+    }
+  }, [])
+
+  return (
+    <div style={{display:'flex', gap:12, marginTop:8}}>
+      {guides.slice(0,6).map((g, idx) => (
+        <div key={g.id || idx} style={{background:'rgba(0,0,0,0.06)', padding:12, borderRadius:8}}>
+          {g.name || g.email || 'Guide'}<br/>
+          <small>{g.phone || 'Local guide'}</small>
+        </div>
+      ))}
     </div>
   )
 }

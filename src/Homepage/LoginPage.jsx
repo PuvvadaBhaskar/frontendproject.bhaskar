@@ -11,6 +11,24 @@ const LoginPage = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     console.log("Logging in with", email, password);
+    const norm = email.toLowerCase()
+
+    // Quick credential check for guide account (client-side demo auth)
+    if (norm === 'guide@gmail.com' && password === 'guide 123') {
+      const guideUser = { id: Date.now(), email: norm, name: 'Guide', role: 'guide', ts: Date.now() }
+      try {
+        const raw = localStorage.getItem('users')
+        const users = raw ? JSON.parse(raw) : []
+        // ensure guide is present in stored users
+        const exists = users.find(u => u.email === norm)
+        if (!exists) users.unshift(guideUser)
+        try { localStorage.setItem('users', JSON.stringify(users)) } catch (err) { void err }
+      } catch (err) { /* ignore */ }
+      try { localStorage.setItem('currentUser', JSON.stringify(guideUser)) } catch (err) { void err }
+      navigate('/guide')
+      return
+    }
+
     const isAdmin = isAdminEmail(email)
     if (isAdmin) { navigate('/admin'); return }
     // persist simple session and users list
